@@ -1,0 +1,3 @@
+[settings]
+src_paths=project,static,templates,turniej
+skip=migrations,manage.py
