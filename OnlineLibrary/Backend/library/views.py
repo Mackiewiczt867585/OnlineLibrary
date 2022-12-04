@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from django_filters import FilterSet, RangeFilter, DateFromToRangeFilter
 from django_filters.widgets import RangeWidget
-from rest_framework import permissions
+from rest_framework import permissions, filters
 
 from library.models import Book
 from library.serializers import BookSerializer
@@ -25,10 +25,9 @@ class RootApi(generics.GenericAPIView):
 class BooksFilter(FilterSet):
     title = django_filters.CharFilter(title__contains='')
 
-
     class Meta:
         model = Book
-        fields = ['title', 'author', 'title', 'publisher']
+        fields = ['title', 'Author', 'title', 'publisher']
 
 
 class BooksListView(generics.ListCreateAPIView):
@@ -36,7 +35,6 @@ class BooksListView(generics.ListCreateAPIView):
     serializer_class = BookSerializer
     permission_classes = []
     name = 'books-list'
-    filter_backends = DjangoFilterBackend
     filter_fields = ['title', 'author', 'title', 'publisher']
     ordering_fields = ['title', 'author', 'title', 'publisher']
     search_fields = ['title', 'author', 'title', 'publisher']
@@ -47,4 +45,3 @@ class BooksDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = BookSerializer
     permission_classes = []
     name = 'books-detail'
-
