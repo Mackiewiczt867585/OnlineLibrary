@@ -1,0 +1,15 @@
+.title-border {
+    outline: #0f0f0f solid thin;
+    border-radius: 25px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.list-item {
+    list-style-type: none;
+
+}
+
+.list-item-text {
+    color: #0f0f0f;
+}
