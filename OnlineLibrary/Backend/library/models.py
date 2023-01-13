@@ -52,12 +52,12 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     is_admin = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     is_superuser = models.BooleanField(default=False)
 
-    USERNAME_FIELD = "email"
+    USERNAME_FIELD = "username"
     EMAIL_FIELD = "email"
-    REQUIRED_FIELDS = ["username", "first_name"]
+    REQUIRED_FIELDS = ["email"]
 
     objects = CustomAccountManager()
 
@@ -74,12 +74,21 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 class Book(models.Model):
     id = models.AutoField(primary_key=True)
-    title = models.CharField(max_length=50, default=None)
-    Author = models.CharField(max_length=50, default=None)
-    ISBN = models.CharField(max_length=13, default=None)
-    publisher = models.CharField(max_length=50, default=None)
-    book_file = models.FileField(default=None)
-    book_cover = models.ImageField(default=None)
-
+    isbn = models.CharField(max_length=255, default=None)
+    title = models.CharField(max_length=255, default=None)
+    author = models.CharField(max_length=255, default=None)
+    publication_year = models.CharField(max_length=10, default=None)
+    publisher = models.CharField(max_length=255, default=None)
+    image_s = models.CharField(default=None, max_length=255)
+    image_m = models.CharField(default=None, max_length=255)
+    image_l = models.CharField(default=None, max_length=255)
+    recommended = models.BooleanField(default=False)
     def __str__(self):
         return f'{self.Author} - {self.title}'
+
+    def update(self, **kwargs):
+        for key, val in kwargs.items():
+            if val is None:
+                val = getattr(self, key)
+            setattr(self, key, val)
+        self.save()

@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
+import {Link} from "react-router-dom";
 
 function useGetRecommendedBooks() {
 
@@ -7,7 +8,7 @@ function useGetRecommendedBooks() {
 
     useEffect(() => {
        axios
-           .get("http://localhost:8000/api/books?ordering=pk")
+           .get("http://localhost:8000/api/books?recommended=true")
            .then((response) => {
                console.log(response);
                setData(response.data.results);
@@ -21,7 +22,7 @@ function useGetRecommendedBooks() {
         <>
             <ol className="list">
             {data.map(book => (
-                <li key={book.id}> <img src={book.image_m} alt="Book cover"/><h1>{book.title}</h1> <h2> by {book.author}</h2></li>
+                <li key={book.id}> <img src={book.image_m} alt="Book cover"/><h1><Link to={book.title}>{book.title}</Link></h1> <h2> by {book.author}</h2></li>
             ))}
             </ol>
         </>

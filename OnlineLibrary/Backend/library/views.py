@@ -1,16 +1,17 @@
-import django_filters
-from django.shortcuts import render
-from django.views.generic import TemplateView
+from django.contrib.auth.models import User
 from django_filters.rest_framework import DjangoFilterBackend
+from library.models import Book, CustomUser
+from library.serializers import BookSerializer
+from rest_framework import filters
 from rest_framework import generics
+from rest_framework.decorators import api_view
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
+from rest_framework_simplejwt.views import TokenObtainPairView
 from django_filters import FilterSet, RangeFilter, DateFromToRangeFilter
-from django_filters.widgets import RangeWidget
-from rest_framework import permissions, filters
 
-from library.models import Book
-from library.serializers import BookSerializer
+from library.serializers import MyTokenObtainPairSerializer, RegisterSerializer
 
 
 class RootApi(generics.GenericAPIView):
@@ -18,30 +19,45 @@ class RootApi(generics.GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         return Response({
-            'books-list': reverse(BooksListView.name, request=request)
+            'books-list': reverse(BooksListView.name, request=request),
         })
 
-
 class BooksFilter(FilterSet):
-    title = django_filters.CharFilter(title__contains='')
-
     class Meta:
         model = Book
-        fields = ['title', 'Author', 'title', 'publisher']
-
+        fields = [
+            'isbn',
+            'title',
+            'author',
+            'publisher',
+            'recommended',
+        ]
 
 class BooksListView(generics.ListCreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = []
+    filter_class = BooksFilter
+    ordering_fields = ['pk']
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ['title', "author"]
+    filterset_fields = [
+        'author',
+        'publisher',
+        'recommended',
+    ]
     name = 'books-list'
-    filter_fields = ['title', 'author', 'title', 'publisher']
-    ordering_fields = ['title', 'author', 'title', 'publisher']
-    search_fields = ['title', 'author', 'title', 'publisher']
 
 
-class BooksDetail(generics.RetrieveUpdateDestroyAPIView):
+class BookDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = []
-    name = 'books-detail'
+    name = 'book-details'
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
+
+class RegisterView(generics.CreateAPIView):
+    queryset = CustomUser.objects.all()
+    permission_classes = (AllowAny,)
+    serializer_class = RegisterSerializer
+
