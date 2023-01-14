@@ -1,7 +1,44 @@
 from django.db import models
+from django.contrib.postgres.fields import ArrayField
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
 from django.utils import timezone
+
+RATING_CHOICES = [
+    ('1', 1),
+    ('2', 2),
+    ('3', 3),
+    ('4', 4),
+    ('5', 5),
+]
+
+CATEGORIES = [
+    ('bl', 'blank'),
+    ('ad','Adventure'),
+    ('cs','Classics'),
+    ('cr','Criminal'),
+    ('fk', 'Folk'),
+    ('fs', 'Fantasy'),
+    ('hs', 'Historical'),
+    ('hr', 'Horror'),
+    ('hm', 'Humour and satire'),
+    ('lf', 'Literary fiction'),
+    ('ms', 'Mystery'),
+    ('pt', 'Poetry'),
+    ('ps', 'Plays'),
+    ('rm', 'Romance'),
+    ('sf', 'Science fiction'),
+    ('ss', 'Short stories'),
+    ('th', 'Thriller'),
+    ('wr', 'War'),
+    ('wf', 'Womens fiction'),
+    ('ya', 'Young adult'),
+    ('ab', 'Autobiography'),
+    ('bp', 'Biography'),
+    ('es', 'Essay'),
+    ('nf', 'Non-fiction novel'),
+    ('sh', 'Self-help'),
+]
 
 
 class CustomAccountManager(BaseUserManager):
@@ -82,9 +119,21 @@ class Book(models.Model):
     image_s = models.CharField(default=None, max_length=255)
     image_m = models.CharField(default=None, max_length=255)
     image_l = models.CharField(default=None, max_length=255)
+    book_file = models.FileField(upload_to="files/", default=None, null=True)
     recommended = models.BooleanField(default=False)
+    favourite = models.ManyToManyField(CustomUser, related_name="favourite_titles")
+    categories = ArrayField(
+        models.CharField(
+            choices=CATEGORIES,
+            max_length=2,
+            blank=True,
+            default="bl",
+            null=True,
+        ), null=True, blank=True, size=8,
+    )
+
     def __str__(self):
-        return f'{self.Author} - {self.title}'
+        return f'{self.author} - {self.title}'
 
     def update(self, **kwargs):
         for key, val in kwargs.items():
@@ -92,3 +141,30 @@ class Book(models.Model):
                 val = getattr(self, key)
             setattr(self, key, val)
         self.save()
+
+
+class Review(models.Model):
+    id = models.AutoField(primary_key=True)
+    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    content = models.CharField(max_length=255, default=None)
+    rating = models.CharField(max_length=1, choices=RATING_CHOICES)
+    upvote = models.ManyToManyField(CustomUser, related_name="upvote", default=None, blank=True)
+    downvote = models.ManyToManyField(CustomUser, related_name="downvote", default=None, blank=True)
+
+    def __str__(self):
+        return f'Review for {self.book.title} written by {self.author.username}.'
+
+    def get_votes_ratio(self):
+        return (self.upvote.count()/(self.upvote.count() + self.downvote.count())) * 100
+
+    def update(self, **kwargs):
+        for key, val in kwargs.items():
+            if val is None:
+                val = getattr(self, key)
+            setattr(self, key, val)
+        self.save()
+
+
+
+

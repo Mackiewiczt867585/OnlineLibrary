@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from library.models import Book, CustomUser
+from library.models import Book, CustomUser, Review
 from django.contrib.auth.password_validation import validate_password
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
@@ -24,6 +24,7 @@ class BookSerializer(serializers.ModelSerializer):
         instance.image_m = validated_data.get("image_m", instance.image_m)
         instance.image_l = validated_data.get("image_l", instance.image_l)
         instance.recommended = validated_data.get('recommended', instance.recommended)
+        instance.categories = validated_data.get('categories', instance.categories)
         instance.save()
         return instance
 
@@ -40,7 +41,41 @@ class BookSerializer(serializers.ModelSerializer):
             'image_m',
             'image_l',
             'recommended',
+            'categories',
         ]
+
+
+
+class ReviewSerializer(serializers.ModelSerializer):
+    content = serializers.CharField(max_length=255)
+    rating = serializers.CharField(max_length=1)
+
+    def create(self, validated_data):
+        return Review.objects.create(
+            author = validated_data.get('author'),
+            book = validated_data.get('book'),
+            content = validated_data.get('content'),
+            rating = validated_data.get('rating'),
+        )
+
+    def update(self, instance, validated_data):
+        instance.upvote.add(*validated_data.get('upvote'))
+        instance.downvote.add(*validated_data.get('downvote'))
+        instance.save()
+        return instance
+
+    class Meta:
+        model = Review
+        fields = [
+            'pk',
+            'author',
+            'book',
+            'content',
+            'rating',
+            'upvote',
+            'downvote',
+        ]
+
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):

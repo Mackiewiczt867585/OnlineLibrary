@@ -16,18 +16,19 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from library.views import RootApi, BooksListView, BookDetail, MyTokenObtainPairView, RegisterView
+from library.views import ReviewDetail, ReviewListView, RootApi, BooksListView, BookDetail, MyTokenObtainPairView, RegisterView
 
 from rest_framework_simplejwt.views import TokenRefreshView
-
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
     path('api/', RootApi.as_view(), name=RootApi.name),
-    path('api/books', BooksListView.as_view(), name=BooksListView.name),
+    path('api/books/', BooksListView.as_view(), name=BooksListView.name),
     path('api/books/<int:pk>', BookDetail.as_view(), name=BookDetail.name),
+    path('api/reviews/', ReviewListView.as_view(), name=ReviewListView.name),
+    path('api/reviews/<int:pk>', ReviewDetail.as_view(), name=ReviewDetail.name),
     path('token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('register/', RegisterView.as_view(), name='auth_register'),
+    path('register/', RegisterView.as_view(), name='aut h_register'),
 ]
