@@ -52,6 +52,14 @@ class BookDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = BookSerializer
     name = 'book-details'
 
+class ReviewsFilter(FilterSet):
+
+    class Meta:
+        model = Review
+        fields = [
+            'book',
+        ]
+
 class ReviewListView(generics.ListCreateAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
@@ -59,7 +67,7 @@ class ReviewListView(generics.ListCreateAPIView):
     ordering_fields = ['pk']
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     search_fields = None
-    filter_fields = None
+    filterset_fields = ['book']
     name = 'reviews-list'
     lookup_field = ['content']
 
