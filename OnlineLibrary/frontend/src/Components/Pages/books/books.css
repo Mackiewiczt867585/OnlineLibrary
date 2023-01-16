@@ -1,0 +1,11 @@
+ul {
+    list-style: none;
+}
+
+search-input {
+    border: black thin;
+}
+
+select {
+    height: 530px;
+}

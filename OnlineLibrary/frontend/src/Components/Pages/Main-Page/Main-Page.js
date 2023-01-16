@@ -17,11 +17,12 @@ function MainPage() {
                         <NewsList/>
                     </div>
 
-                    <div className="col-md-2"></div>
+                    <div className="col-md-1"></div>
 
-                    <div className="col-md-5 title-border card ">
+                    <div className="col-md-6 title-border card ">
                         <h1 className="title text-center card-header"> We Recommend </h1>
                         {useGetRecommendedBooks()}
+                        <></>
                     </div>
 
                 </div>

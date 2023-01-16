@@ -6,23 +6,32 @@ function useGetRecommendedBooks() {
 
     const [data, setData] = useState([]);
 
-    useEffect(() => {
-       axios
-           .get("http://localhost:8000/api/books?recommended=true")
-           .then((response) => {
-               console.log(response);
-               setData(response.data.results);
-           })
-           .catch( error => {
-               console.log(error);
-           })
+    useEffect( () => {
+        axios
+            .get("http://localhost:8000/api/books/?recommended=true")
+            .then((response) => {
+                setData(response.data.results);
+            })
+            .catch(error => {
+                console.log(error);
+            })
     }, []);
 
     return (
         <>
             <ol className="list">
             {data.map(book => (
-                <li key={book.id}> <img src={book.image_m} alt="Book cover"/><h1><Link to={book.title}>{book.title}</Link></h1> <h2> by {book.author}</h2></li>
+                <li className="border" key={book.id}>
+                            <div className="row">
+                                <div className="col-sm-1">
+                                    <img src={book.image_l} alt="Book cover" className="cover-img"/>
+                                </div>
+                                <div className="col-sm-5"/>
+                                <div className="col-sm-7">
+                                    <h1><Link to={"/title?t="+String(book.pk)} className="list-item-text">{book.title}</Link></h1> <h2> by {book.author}</h2>
+                                </div>
+                            </div>
+                        </li>
             ))}
             </ol>
         </>
