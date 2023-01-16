@@ -108,6 +108,12 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
             setattr(self, key, val)
         self.save()
 
+class Category(models.Model):
+    name = models.CharField(max_length=255, default=None)
+
+    def __str__(self):
+        return self.name
+
 
 class Book(models.Model):
     id = models.AutoField(primary_key=True)
@@ -122,15 +128,7 @@ class Book(models.Model):
     book_file = models.FileField(upload_to="files/", default=None, null=True)
     recommended = models.BooleanField(default=False)
     favourite = models.ManyToManyField(CustomUser, related_name="favourite_titles")
-    categories = ArrayField(
-        models.CharField(
-            choices=CATEGORIES,
-            max_length=2,
-            blank=True,
-            default="bl",
-            null=True,
-        ), null=True, blank=True, size=8,
-    )
+    categories = models.ManyToManyField(Category, related_name="categories")
 
     def __str__(self):
         return f'{self.author} - {self.title}'

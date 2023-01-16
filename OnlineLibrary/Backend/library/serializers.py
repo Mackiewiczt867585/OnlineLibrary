@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from library.models import Book, CustomUser, Review
+from library.models import Book, CustomUser, Review, Category
 from django.contrib.auth.password_validation import validate_password
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
@@ -10,7 +10,6 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 class BookSerializer(serializers.ModelSerializer):
     title = serializers.CharField(max_length=90)
-
     def create(self, validated_data):
         return Book.objects.create(**validated_data)
 
@@ -23,8 +22,9 @@ class BookSerializer(serializers.ModelSerializer):
         instance.image_s = validated_data.get("image_s", instance.image_s)
         instance.image_m = validated_data.get("image_m", instance.image_m)
         instance.image_l = validated_data.get("image_l", instance.image_l)
+        instance.book_file = validated_data.get("book_file", instance.book_file)
         instance.recommended = validated_data.get('recommended', instance.recommended)
-        instance.categories = validated_data.get('categories', instance.categories)
+        instance.categories.add(*validated_data.get('categories'))
         instance.save()
         return instance
 
@@ -40,11 +40,28 @@ class BookSerializer(serializers.ModelSerializer):
             'image_s',
             'image_m',
             'image_l',
+            'book_file',
             'recommended',
             'categories',
         ]
 
+class CategorySerializer(serializers.ModelSerializer):
+    name = serializers.CharField(max_length=255)
 
+    def create(self, validated_data):
+        return Category.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        instance.name = validated_data.get('name', instance.name)
+        instance.save()
+        return instance
+
+    class Meta:
+        model = Category
+        fields = [
+            'id',
+            'name'
+        ]
 
 class ReviewSerializer(serializers.ModelSerializer):
     content = serializers.CharField(max_length=255)
@@ -118,3 +135,4 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.save()
 
         return user
+
