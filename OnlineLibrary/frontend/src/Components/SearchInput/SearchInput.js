@@ -34,30 +34,30 @@ export const FilterInput = () => {
     return (
         <div>
             <select name="categories" className="" id="categories" multiple>
-                <option value="ab">Autobiography</option>
-                <option value="ad">Adventure</option>
-                <option value="bp">Biography</option>
-                <option value="cs">Classics</option>
-                <option value="cr">Criminal</option>
-                <option value="es">Essay</option>
-                <option value="fk">Folk </option>
-                <option value="fs">Fantasy </option>
-                <option value="hs">Historical </option>
-                <option value="hr">Horror </option>
-                <option value="hm">Humour and satire </option>
-                <option value="lf">Literary fiction </option>
-                <option value="ms">Mystery </option>
-                <option value="nf">Non-fiction novel</option>
-                <option value="pt">Poetry </option>
-                <option value="ps">Plays </option>
-                <option value="rm">Romance </option>
-                <option value="sf">Science fiction </option>
-                <option value="ss">Short stories </option>
-                <option value="th">Thriller </option>
-                <option value="wr">War </option>
-                <option value="wf">Womens fiction </option>
-                <option value="ya">Young adult </option>
-                <option value="sh">Self-help</option>
+                <option value="20">Autobiography</option>
+                <option value="1">Adventure</option>
+                <option value="21">Biography</option>
+                <option value="2">Classics</option>
+                <option value="3">Criminal</option>
+                <option value="22">Essay</option>
+                <option value="4">Folk </option>
+                <option value="5">Fantasy </option>
+                <option value="6">Historical </option>
+                <option value="7">Horror </option>
+                <option value="8">Humour and satire </option>
+                <option value="9">Literary fiction </option>
+                <option value="10">Mystery </option>
+                <option value="23">Non-fiction novel</option>
+                <option value="11">Poetry </option>
+                <option value="12">Plays </option>
+                <option value="13">Romance </option>
+                <option value="14">Science fiction </option>
+                <option value="15">Short stories </option>
+                <option value="16">Thriller </option>
+                <option value="17">War </option>
+                <option value="18">Womens fiction </option>
+                <option value="19">Young adult </option>
+                <option value="24">Self-help</option>
             </select>
             <button className="filter-button" onClick={search}>Filter</button>
         </div>
