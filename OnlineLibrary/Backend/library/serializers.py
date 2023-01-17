@@ -27,6 +27,7 @@ class BookSerializer(serializers.ModelSerializer):
         instance.image_l = validated_data.get("image_l", instance.image_l)
         instance.book_file = validated_data.get("book_file", instance.book_file)
         instance.recommended = validated_data.get('recommended', instance.recommended)
+        instance.favourite.add(*validated_data.get('favourite'))
         instance.categories.add(*validated_data.get('categories'))
         instance.save()
         return instance
@@ -47,6 +48,7 @@ class BookSerializer(serializers.ModelSerializer):
             'recommended',
             'categories',
             'recommendations',
+            'favourite',
         ]
 
 class CategorySerializer(serializers.ModelSerializer):

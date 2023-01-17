@@ -1,11 +1,13 @@
 import React, {useContext} from "react";
 import "react-bootstrap";
 import AuthContext from "../../context/AuthContext";
+import useGetFavouriteBooks from "../../APICalls/useGetFavouriteBooks";
 
 function Profile() {
 
     const { user } = useContext(AuthContext);
 
+    console.log(user);
     return (
         <div className="row">
 
@@ -24,8 +26,7 @@ function Profile() {
             <div className="col-md-7 card">
                 <div className="card-body">
                 <h1 className="card-header">Favourite Titles</h1>
-                    <li><span className="card-text">Fav title 0</span></li>
-                    <li><span className="card-text">Fav title 1</span></li>
+                    {useGetFavouriteBooks(user.user_id)}
                 </div>
             </div>
 

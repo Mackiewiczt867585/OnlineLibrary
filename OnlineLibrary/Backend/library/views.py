@@ -48,6 +48,7 @@ class BooksListView(generics.ListCreateAPIView):
         'publisher',
         'recommended',
         'categories',
+        'favourite',
     ]
     name = 'books-list'
 
