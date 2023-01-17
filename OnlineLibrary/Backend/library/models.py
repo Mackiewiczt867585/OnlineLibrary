@@ -3,6 +3,27 @@ from django.contrib.postgres.fields import ArrayField
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
 from django.utils import timezone
+import numpy as np
+import pickle
+
+def recommend_book(book_name):
+    book_pivot = pickle.load(open('/backend/library/book_pivot.pkl', 'rb'))
+    model = pickle.load(open('/backend/library/model.pkl', 'rb'))
+    try:
+        book_id = np.where(book_pivot.index == book_name)[0][0]
+    except:
+        return None
+    distance, suggestion = model.kneighbors(book_pivot.iloc[book_id, :].values.reshape(1, -1), n_neighbors=6)
+    recommendations_list = []
+
+    for i in range(len(suggestion)):
+        books = book_pivot.index[suggestion[i]]
+        for j in books:
+            if j == book_name:
+                pass
+            else:
+                recommendations_list.append(j)
+    return recommendations_list
 
 RATING_CHOICES = [
     ('1', 1),
@@ -139,6 +160,17 @@ class Book(models.Model):
                 val = getattr(self, key)
             setattr(self, key, val)
         self.save()
+
+    def recommend(self):
+        recommendation_titles = recommend_book(self.title)
+        recommendations = []
+        try:
+            for title in recommendation_titles:
+                recommendations.append(Book.objects.filter(title=title).first())
+        except:
+            return None
+        return recommendations
+
 
 
 class Review(models.Model):

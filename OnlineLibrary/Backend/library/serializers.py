@@ -10,6 +10,9 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 class BookSerializer(serializers.ModelSerializer):
     title = serializers.CharField(max_length=90)
+    recommendations = serializers.ListField(
+        child=serializers.CharField(), source="recommend"
+    )
     def create(self, validated_data):
         return Book.objects.create(**validated_data)
 
@@ -43,6 +46,7 @@ class BookSerializer(serializers.ModelSerializer):
             'book_file',
             'recommended',
             'categories',
+            'recommendations',
         ]
 
 class CategorySerializer(serializers.ModelSerializer):

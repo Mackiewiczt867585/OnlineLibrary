@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import "react-bootstrap";
 import "./SingleBook.css";
 import axios from "axios";
+import useGetRecommendations from "../../APICalls/useGetRecommendation";
 
 
 function SingleBook(){
@@ -36,7 +37,22 @@ function SingleBook(){
             })
     }, [reviewsUrl]);
 
-    console.log(reviewsData);
+    let titles_list = [];
+    for (let i in bookData.recommendations){
+        titles_list.push(<h4 className="card-text">{bookData.recommendations[i]}</h4>);
+    }
+
+    let reviews_list = [];
+    for (let i in reviewsData){
+        reviews_list.push(
+            <li className="border" key={reviewsData[i].pk}>
+                <h2 className="card-text"> Review by {reviewsData[i].author}: </h2>
+                <span>{reviewsData[i].content}</span><br></br>
+                <span>Book rating: {reviewsData[i].rating} / 5</span> <br></br>
+                <span>Review upvote ratio: {(reviewsData[i].upvote.length / (reviewsData[i].upvote.length + reviewsData[i].downvote.length)) * 100}%</span> <br></br>
+            </li>
+        )
+    }
 
     return (
       <>
@@ -48,21 +64,12 @@ function SingleBook(){
                 <div className="col-md-8">
                 <h1 className="card-header">{bookData.title}</h1>
                     <span className="card-text"> {bookData.author}</span>
-
-                    <div className="card-body">
                         <h1 className="card-header">Reviews</h1>
                         <ul className="list">
-                        {reviewsData.map(review => (
-                                <li className="border" key={review.pk}>
-                                    <h2 className="card-text"> Review by {review.author}: </h2>
-                                    <span>{review.content}</span><br></br>
-                                    <span>Book rating: {review.rating} / 5</span> <br></br>
-                                    <span>Review upvote ratio: {(review.upvote.length / (review.upvote.length + review.downvote.length)) * 100}%</span> <br></br>
-                                </li>
-                            ))
-                        }
+                            {reviews_list}
                         </ul>
-                    </div>
+                <h1 className="card-header">Similar Titles</h1>
+                    {titles_list}
                 </div>
             </div>
         </div>

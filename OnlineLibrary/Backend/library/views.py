@@ -80,7 +80,6 @@ class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
     name = 'review-details'
-    
 
 
 class UsersLstView(generics.ListCreateAPIView):
