@@ -21,7 +21,7 @@ function App() {
         <Navbar/>
         <Switch>
             <PrivateRoute path="/protected">xdd</PrivateRoute>
-            <Route path="/rankings" exact> <RankingsPage /> </Route>
+            {/*<Route path="/rankings" exact> <RankingsPage /> </Route>*/}
             <Route path="/books" exact> <BooksPage/> </Route>
             <Route path="/about" exact> <AboutUsPage/> </Route>
             <Route path="/" exact > <MainPage/> </Route>

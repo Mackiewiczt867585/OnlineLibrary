@@ -16,9 +16,9 @@ function Navbar() {
                  <Link to="/books" className="nav-item">
                      Books
                  </Link>
-                 <Link to="/rankings" className="nav-item">
-                     Rankings
-                 </Link>
+                 {/*<Link to="/rankings" className="nav-item">*/}
+                 {/*    Rankings*/}
+                 {/*</Link>*/}
                  <Link to="/about" className="nav-item">
                     About us
                  </Link>
