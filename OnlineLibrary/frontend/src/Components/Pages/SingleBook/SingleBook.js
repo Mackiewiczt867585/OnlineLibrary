@@ -4,6 +4,7 @@ import "./SingleBook.css";
 import axios from "axios";
 import useGetRecommendations from "../../APICalls/useGetRecommendation";
 import {Button} from "react-bootstrap";
+import {Link} from "react-router-dom";
 
 function download(file){
     console.log(file);
@@ -47,15 +48,15 @@ function SingleBook(){
 
     let titles_list = [];
     for (let i in bookData.recommendations){
-        titles_list.push(<h4 className="card-text">{bookData.recommendations[i]}</h4>);
+        titles_list.push(<h4 className="card-text"><Link to={"/title?t="+String(bookData.recommendations[i][0])}>{bookData.recommendations[i][1]}</Link></h4>);
     }
-
+    console.log(bookData.recommendations);
     let reviews_list = [];
     for (let i in reviewsData){
         reviews_list.push(
             <li className="border" key={reviewsData[i].pk}>
-                <h2 className="card-text"> Review by {reviewsData[i].author}: </h2>
-                <span>{reviewsData[i].content}</span><br></br>
+                <h2 className="card-text"> Review by {reviewsData[i].author}: </h2><br></br>
+                <span>{reviewsData[i].content}</span><br></br><br></br>
                 <span>Book rating: {reviewsData[i].rating} / 5</span> <br></br>
                 <span>Review upvote ratio: {(reviewsData[i].upvote.length / (reviewsData[i].upvote.length + reviewsData[i].downvote.length)) * 100}%</span> <br></br>
             </li>
@@ -71,7 +72,9 @@ function SingleBook(){
                 </div>
                 <div className="col-md-8">
                 <h1 className="card-header">{bookData.title}</h1><br></br>
-                    <span>{bookData.synopsis}</span><br></br>
+                    <div className="synopsis">
+                    <span >{bookData.synopsis}</span><br></br>
+                    </div>
                     <span className="card-text">Written by {bookData.author}</span><br></br>
                         <h1 className="card-header">Reviews</h1>
                         <ul className="list">
@@ -80,6 +83,7 @@ function SingleBook(){
                 <h1 className="card-header">Similar Titles</h1>
                     {titles_list}
                 </div>
+                <iframe title="pdf" src={bookData.book_file}></iframe>
             </div>
         </div>
       </>

@@ -90,6 +90,13 @@ class UsersLstView(generics.ListCreateAPIView):
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     name = 'users-list'
 
+    class Meta:
+        model = CustomUser
+        fields = [
+            "id",
+            "username"
+        ]
+
 class UsersDetails(generics.RetrieveUpdateDestroyAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = RegisterSerializer

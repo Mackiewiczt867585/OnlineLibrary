@@ -167,7 +167,8 @@ class Book(models.Model):
         recommendations = []
         try:
             for title in recommendation_titles:
-                recommendations.append(Book.objects.filter(title=title).first())
+                recommendation = Book.objects.filter(title=title).first()
+                recommendations.append([recommendation.id, recommendation.title])
         except:
             return None
         return recommendations
@@ -186,6 +187,8 @@ class Review(models.Model):
     def __str__(self):
         return f'Review for {self.book.title} written by {self.author.username}.'
 
+    def get_username(self):
+        return self.author.username
     def get_votes_ratio(self):
         return (self.upvote.count()/(self.upvote.count() + self.downvote.count())) * 100
 

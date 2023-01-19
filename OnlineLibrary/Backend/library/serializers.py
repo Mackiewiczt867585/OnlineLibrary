@@ -11,8 +11,12 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 class BookSerializer(serializers.ModelSerializer):
     title = serializers.CharField(max_length=90)
     recommendations = serializers.ListField(
-        child=serializers.CharField(), source="recommend"
+        source="recommend",
+        child=serializers.ListField(
+            child=serializers.CharField(), required=False,
+        )
     )
+    book_file = serializers.FileField(required=False)
     def create(self, validated_data):
         return Book.objects.create(**validated_data)
 
@@ -27,6 +31,7 @@ class BookSerializer(serializers.ModelSerializer):
         instance.image_l = validated_data.get("image_l", instance.image_l)
         instance.book_file = validated_data.get("book_file", instance.book_file)
         instance.recommended = validated_data.get('recommended', instance.recommended)
+        instance.synopsis = validated_data.get('synopsis', instance.synopsis)
         instance.favourite.add(*validated_data.get('favourite'))
         instance.categories.add(*validated_data.get('categories'))
         instance.save()
@@ -40,6 +45,7 @@ class BookSerializer(serializers.ModelSerializer):
             'title',
             'author',
             'publisher',
+            'synopsis',
             'publication_year',
             'image_s',
             'image_m',
@@ -72,6 +78,7 @@ class CategorySerializer(serializers.ModelSerializer):
 class ReviewSerializer(serializers.ModelSerializer):
     content = serializers.CharField(max_length=255)
     rating = serializers.CharField(max_length=1)
+    author = serializers.CharField(source="get_username")
 
     def create(self, validated_data):
         return Review.objects.create(
@@ -123,7 +130,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ('email','username', 'password', 'password2')
+        fields = ('pk','email','username', 'password', 'password2')
 
     def validate(self, attrs):
         if attrs['password'] != attrs['password2']:
