@@ -50,7 +50,7 @@ function SingleBook(){
     for (let i in bookData.recommendations){
         titles_list.push(<h4 className="card-text"><Link to={"/title?t="+String(bookData.recommendations[i][0])}>{bookData.recommendations[i][1]}</Link></h4>);
     }
-    console.log(bookData.recommendations);
+
     let reviews_list = [];
     for (let i in reviewsData){
         reviews_list.push(
