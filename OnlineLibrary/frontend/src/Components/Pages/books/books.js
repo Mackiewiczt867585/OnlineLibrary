@@ -7,7 +7,6 @@ import {Link} from "react-router-dom";
 
 function BooksPage(){
 
-
     return (
         <div className="container">
             <div className="row">

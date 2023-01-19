@@ -2,3 +2,7 @@ img {
     min-width: 300px;
     height: auto;
 }
+
+h1, h2 {
+    display: inline-block;
+}

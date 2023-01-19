@@ -2,18 +2,27 @@ import React from "react";
 
 
 function search() {
-        const filter_element_id = "categories";
+
         const search_element_id = "search";
         const search_query = document.getElementById(search_element_id).value;
-        const filter_query = document.getElementById(filter_element_id).value;
         let url = new URL(window.location.href);
         let params = new URLSearchParams(url.search);
         params.set(search_element_id, search_query);
-        params.set(filter_element_id, filter_query);
         if (String(url).includes("?") !== true) url = url + "?";
         let finalUrl = String(url) + params.toString();
         window.location.replace(finalUrl);
     }
+
+function filter() {
+    const filter_element_id = "categories";
+    const filter_query = document.getElementById(filter_element_id).value;
+    let url = new URL(window.location.href);
+    let params = new URLSearchParams(url.search);
+    params.set(filter_element_id, filter_query);
+    if (String(url).includes("?") !== true) url = url + "?";
+    let finalUrl = String(url) + params.toString();
+    window.location.replace(finalUrl);
+}
 
 export const SearchInput = () => {
     
@@ -59,7 +68,7 @@ export const FilterInput = () => {
                 <option value="19">Young adult </option>
                 <option value="24">Self-help</option>
             </select>
-            <button className="filter-button" onClick={search}>Filter</button>
+            <button className="filter-button" onClick={filter}>Filter</button>
         </div>
     );
         

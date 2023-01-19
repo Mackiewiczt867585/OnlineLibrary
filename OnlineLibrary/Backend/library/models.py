@@ -143,6 +143,7 @@ class Book(models.Model):
     author = models.CharField(max_length=255, default=None)
     publication_year = models.CharField(max_length=10, default=None)
     publisher = models.CharField(max_length=255, default=None)
+    synopsis = models.CharField(max_length=500, default=None, null=True)
     image_s = models.CharField(default=None, max_length=255)
     image_m = models.CharField(default=None, max_length=255)
     image_l = models.CharField(default=None, max_length=255)

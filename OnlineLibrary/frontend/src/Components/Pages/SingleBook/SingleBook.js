@@ -3,6 +3,12 @@ import "react-bootstrap";
 import "./SingleBook.css";
 import axios from "axios";
 import useGetRecommendations from "../../APICalls/useGetRecommendation";
+import {Button} from "react-bootstrap";
+
+function download(file){
+    console.log(file);
+    // window.location.href = "http://localhost:8000/api/books/"+String(file);
+}
 
 
 function SingleBook(){
@@ -14,6 +20,8 @@ function SingleBook(){
     const bookId = urlParams.get("t");
     url = url + bookId;
     reviewsUrl = reviewsUrl + "?book=" + String(bookId);
+
+    const lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ligula leo, faucibus viverra massa id, hendrerit gravida justo. Aliquam quis magna velit. Aenean nulla libero, venenatis at porta et, semper in dolor. Sed tincidunt sem est, in malesuada arcu venenatis vitae. Vestibulum lobortis justo ac massa ultricies, a viverra odio ullamcorper. Mauris nibh ante, sodales at rhoncus nec, varius ut massa. Nullam posuere sit amet tellus id pulvinar. Nam in faucibus purus. Pellentesque dui nibh, euismod vitae lorem vel, maximus volutpat lacus. Aenean mattis ornare velit in luctus. Fusce sit amet tempus turpis. Donec ullamcorper eros sodales, iaculis magna id, tincidunt nisi. Curabitur feugiat diam viverra interdum lobortis. Donec sed urna a odio ullamcorper gravida. Nulla a mauris lacus."
 
     useEffect( () => {
          axios
@@ -62,8 +70,9 @@ function SingleBook(){
                     <img src={bookData.image_l} alt="Book cover"/>
                 </div>
                 <div className="col-md-8">
-                <h1 className="card-header">{bookData.title}</h1>
-                    <span className="card-text"> {bookData.author}</span>
+                <h1 className="card-header">{bookData.title}</h1><br></br>
+                    <span>{bookData.synopsis}</span><br></br>
+                    <span className="card-text">Written by {bookData.author}</span><br></br>
                         <h1 className="card-header">Reviews</h1>
                         <ul className="list">
                             {reviews_list}

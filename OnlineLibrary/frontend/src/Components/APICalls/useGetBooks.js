@@ -14,6 +14,8 @@ function useGetBooks(url="http://localhost:8000/api/books/?") {
         finalUrl = finalUrl+tempString;
     }
 
+    console.log(finalUrl);
+
     useEffect(() => {
        axios
            .get(finalUrl)
@@ -25,22 +27,27 @@ function useGetBooks(url="http://localhost:8000/api/books/?") {
            })
     }, [finalUrl]);
 
+    let results_list = [];
+    for (let i in data){
+        results_list.push(
+            <li className="border" key={data[i].id}>
+                <div className="row">
+                    <div className="col-sm-1">
+                        <img src={data[i].image_m} alt="Book cover"/>
+                    </div>
+                    <div className="col-sm-4"/>
+                    <div className="col-sm-7">
+                        <h1><Link to={"/title?t="+String(data[i].pk)}>{data[i].title}</Link></h1> <h2> by {data[i].author}</h2>
+                    </div>
+                </div>
+            </li>
+        );
+    }
+
     return (
         <>
             <ul className="list">
-                {data.map(book => (
-                        <li className="border" key={book.id}>
-                            <div className="row">
-                                <div className="col-sm-1">
-                                    <img src={book.image_m} alt="Book cover"/>
-                                </div>
-                                <div className="col-sm-4"/>
-                                <div className="col-sm-7">
-                            <h1><Link to={"/title?t="+String(book.pk)}>{book.title}</Link></h1> <h2> by {book.author}</h2>
-                                </div>
-                            </div>
-                        </li>
-                ))}
+                {results_list}
             </ul>
         </>
     );
