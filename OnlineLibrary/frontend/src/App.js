@@ -12,6 +12,7 @@ import LoginPage from "./Components/Pages/LoginPage/Login";
 import Register from "./Components/Pages/RegisterPage/Register";
 import Profile from "./Components/Pages/ProfilePage/Profile";
 import SingleBook from "./Components/Pages/SingleBook/SingleBook";
+import ReadBook from "./Components/Pages/ReadBook/ReadBook";
 
 function App() {
 
@@ -29,6 +30,7 @@ function App() {
             <Route path="/register" exact> <Register/> </Route>
             <Route path="/profile" exact> <Profile user={AuthContext.contextData} /> </Route>
             <Route path="/title" exact> <SingleBook/> </Route>
+            <Route path="/read" exact> <ReadBook/> </Route>
         </Switch>
         </AuthProvider>
     </Router>

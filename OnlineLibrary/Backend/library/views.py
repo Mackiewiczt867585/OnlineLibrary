@@ -1,16 +1,16 @@
-from django.contrib.auth.models import User
+import os
+
 from django_filters.rest_framework import DjangoFilterBackend
 from library.models import Book, CustomUser, Review, Category
 from library.serializers import BookSerializer, MyTokenObtainPairSerializer, RegisterSerializer, ReviewSerializer, CategorySerializer
 from rest_framework import filters
 from rest_framework import generics
-from rest_framework.decorators import api_view
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django_filters import FilterSet, RangeFilter, DateFromToRangeFilter, BaseCSVFilter, CharFilter
-from django.contrib.postgres.fields import ArrayField
+from django.http import FileResponse, Http404, HttpResponse
 
 class RootApi(generics.GenericAPIView):
     name = 'root-api'
@@ -119,3 +119,14 @@ class CategoriesDetails(generics.RetrieveUpdateDestroyAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     name = 'categories-details'
+
+
+def show_pdf(request, book_file):
+    try:
+        filepath = os.path.join('files', book_file)
+        with open(filepath, 'rb') as pdf:
+            response = HttpResponse(pdf.read(), content_type='application/pdf')
+            response['Content-Disposition'] = f'inline;filename={book_file}'
+            return response
+    except FileNotFoundError:
+        raise Http404()

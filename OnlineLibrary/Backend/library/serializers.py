@@ -16,7 +16,7 @@ class BookSerializer(serializers.ModelSerializer):
             child=serializers.CharField(), required=False,
         )
     )
-    book_file = serializers.FileField(required=False)
+    book_file = serializers.FileField(required=False, use_url=False)
     def create(self, validated_data):
         return Book.objects.create(**validated_data)
 
