@@ -14,7 +14,6 @@ function useGetBooks(url="http://localhost:8000/api/books/?") {
         finalUrl = finalUrl+tempString;
     }
 
-    console.log(finalUrl);
 
     useEffect(() => {
        axios

@@ -33,35 +33,6 @@ RATING_CHOICES = [
     ('5', 5),
 ]
 
-CATEGORIES = [
-    ('bl', 'blank'),
-    ('ad','Adventure'),
-    ('cs','Classics'),
-    ('cr','Criminal'),
-    ('fk', 'Folk'),
-    ('fs', 'Fantasy'),
-    ('hs', 'Historical'),
-    ('hr', 'Horror'),
-    ('hm', 'Humour and satire'),
-    ('lf', 'Literary fiction'),
-    ('ms', 'Mystery'),
-    ('pt', 'Poetry'),
-    ('ps', 'Plays'),
-    ('rm', 'Romance'),
-    ('sf', 'Science fiction'),
-    ('ss', 'Short stories'),
-    ('th', 'Thriller'),
-    ('wr', 'War'),
-    ('wf', 'Womens fiction'),
-    ('ya', 'Young adult'),
-    ('ab', 'Autobiography'),
-    ('bp', 'Biography'),
-    ('es', 'Essay'),
-    ('nf', 'Non-fiction novel'),
-    ('sh', 'Self-help'),
-]
-
-
 class CustomAccountManager(BaseUserManager):
     def create_superuser(self, email, username, first_name, password, **other_fields):
 

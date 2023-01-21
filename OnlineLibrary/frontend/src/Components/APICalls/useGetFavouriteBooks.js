@@ -16,7 +16,7 @@ function useGetFavouriteBooks(user_id){
                     console.log(error);
                 })
         }, [url]);
-        console.log(data);
+
         let favourites_list = [];
         for (let i in data){
             favourites_list.push(

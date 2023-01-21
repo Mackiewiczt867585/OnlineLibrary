@@ -15,8 +15,8 @@ function BooksPage(){
                     <h1 className="text-center card-header">Search</h1>
                         <SearchInput/>
                     <h1 className="text-center card-header">Filter Categories: </h1>
-                        <FilterInput/>
-                    <Link to="/books">Reset Filters  </Link>
+                    <FilterInput/> <br></br>
+                    <button href="/books"><Link to="/books">Reset Filters  </Link></button>
                     </div>
 
                 <div className="col-md-1"></div>

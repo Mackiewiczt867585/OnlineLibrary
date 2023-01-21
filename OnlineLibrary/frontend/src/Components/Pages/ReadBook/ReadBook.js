@@ -15,13 +15,12 @@ function ReadBook(){
     setNumPages(numPages);
   }
   function pgup() {
-        if (pageNumber === 1) setPageNumber(pageNumber);
-        setPageNumber( pageNumber + 1);
+        if (pageNumber === numPages) setPageNumber(pageNumber);
+        else setPageNumber( pageNumber + 1);
   }
   function pgdn() {
-        if (pageNumber === numPages) setPageNumber(pageNumber);
-        setPageNumber(pageNumber - 1);
-
+        if (pageNumber === 1) setPageNumber(pageNumber);
+        else setPageNumber(pageNumber - 1);
   }
 
 
