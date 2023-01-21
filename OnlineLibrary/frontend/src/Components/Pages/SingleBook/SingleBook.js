@@ -1,9 +1,20 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import "react-bootstrap";
 import "./SingleBook.css";
 import axios from "axios";
 import {Link} from "react-router-dom";
-import { Document, Page } from 'react-pdf/dist/esm/entry.webpack5';
+import AuthContext from "../../context/AuthContext";
+import UsePutFavourite from "../../APICalls/usePutFavourite";
+
+function Favourite(){
+    const { user } = useContext(AuthContext);
+    const button = user ? (
+        <></>
+    ) : (
+        <></>
+    )
+    return button;
+}
 
 function SingleBook(){
 
@@ -71,7 +82,7 @@ function SingleBook(){
                     {read_button}
                 </div>
                 <div className="col-md-8">
-                <h1 className="card-header">{bookData.title}</h1><br></br>
+                <h1 className="card-header">{bookData.title} <button onClick={UsePutFavourite}>&hearts;</button> </h1><br></br>
                     <div className="synopsis">
                     <span >{bookData.synopsis}</span><br></br>
                     </div>
